@@ -8,14 +8,14 @@ var fs = require('fs');
 
 
 describe('HtmlParserTest.js Tests: ', function() {
-  
+
     it('extracts multiple <a href> hyperlinks', function(done) {
         loadHtml('three-hyperlinks.html', function(html) {
           htmlParser.extractLinks(html, function(links) {
             expect(links).to.have.lengthOf(3);
-            expect(links).to.include('/l1');
-            expect(links).to.include('/l2');
-            expect(links).to.include('/l3');
+            expect(links).to.include('/link1');
+            expect(links).to.include('/link2');
+            expect(links).to.include('/link3');
             done();
           });
         });
@@ -26,9 +26,9 @@ describe('HtmlParserTest.js Tests: ', function() {
         loadHtml('multi-resource-links.html', function(html) {
           htmlParser.extractLinks(html, function(links) {
             expect(links).to.have.lengthOf(9);
-            expect(links).to.include('/l1');
-            expect(links).to.include('/l2');
-            expect(links).to.include('/l3');
+            expect(links).to.include('/link1');
+            expect(links).to.include('/link2');
+            expect(links).to.include('/link3');
             expect(links).to.include('/js/script1.js');
             expect(links).to.include('/js/script2.js');
             expect(links).to.include('/js/script3.js');
