@@ -9,7 +9,10 @@
     },
     "dependencies": {
         "superagent-mocker": "*",
-        "superagent":"*"
+        "superagent":"*",
+        "cheerio": "*",
+        "query-selector": "~1.0.9",
+        "jsdom": "~9.6.0"
     },
     "devDependencies": {
         "mocha": "~3.1.0",

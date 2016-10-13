@@ -8,7 +8,7 @@ class UrlCrawler {
        this.http = http;
    }
 
-   crawl(callback) {
+   request(callback) {
      this.http.get(this.rootUrl).end(function(err, response) {
        callback(err, {headers: response.headers, content: response.text});
      });

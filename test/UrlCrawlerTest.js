@@ -12,13 +12,13 @@ var sinon = require('sinon');
 
 describe('UrlCrawler.js Tests: ', function() {
 
-    it('url crawler returns response for given url', function(done) {
+    it('calls back with expetcted resource response for given url request', function(done) {
         var url = 'http://site/';
         var html = '<html> <head> </head> <body> a simple page </body> </html>';
         var stub = stubSuperAgent(url, html);
         var urlCrawler = new UrlCrawler(url, superagent);
 
-        urlCrawler.crawl(function(err, response) {
+        urlCrawler.request(function(err, response) {
           expect(response.content).to.equal(html);
           expect(stub.called).to.equal(true);
           expect(stub.calledWith(url)).to.equal(true);
