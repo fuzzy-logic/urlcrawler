@@ -31,3 +31,13 @@ To take a closer look the tests are in ./test directory. Project source code in 
 ```
 ./node_modules/mocha/bin/mocha
 ```
+
+
+
+
+# TODOs
+
+* follow links in html responses
+* don't follow external links
+* steps to build
+* briefly describe any tradeoffs of approach
