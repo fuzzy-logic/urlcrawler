@@ -18,7 +18,7 @@ describe('UrlCrawler.js Tests: ', function() {
         var stub = stubSuperAgent(url, html);
         var urlCrawler = new UrlCrawler(url, superagent);
 
-        urlCrawler.request(function(err, response) {
+        urlCrawler.request(url, function(err, response) {
           expect(response.content).to.equal(html);
           expect(stub.called).to.equal(true);
           expect(stub.calledWith(url)).to.equal(true);
