@@ -1,0 +1,28 @@
+{
+    "name": "urlcrawler",
+    "version": "0.0.1",
+    "author": "Gawain Hammond <gh@gmail.com>",
+    "description": "a url crawler",
+    "license": "Apache 2.0",
+    "engines": {
+        "node": ">=4.10"
+    },
+    "dependencies": {
+        "superagent-mocker": "*",
+        "superagent":"*"
+    },
+    "devDependencies": {
+        "mocha": "~3.1.0",
+        "chai": "~3.5.0",
+        "sinon": "*"
+    },
+   "jshintConfig": {
+     "node":true,
+    "strict":false,
+    "esnext": true,
+    "undef": true,
+    "unused": true,
+    "maxcomplexity": 5,
+    "maxdepth": 3
+}
+}
