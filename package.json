@@ -8,11 +8,9 @@
         "node": ">=4.10"
     },
     "dependencies": {
-        "superagent-mocker": "*",
         "superagent":"*",
         "cheerio": "*",
-        "query-selector": "~1.0.9",
-        "jsdom": "~9.6.0"
+        "async":"*"
     },
     "devDependencies": {
         "mocha": "~3.1.0",
