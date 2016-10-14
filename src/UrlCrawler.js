@@ -11,9 +11,12 @@ var htmlParser = require('../src/HtmlParser.js');
  */
 class UrlCrawler {
 
+
+
    constructor(url, http) {
        this.rootUrl = url;
        this.http = http;
+       this.pages = {};
    }
 
    /**
@@ -25,7 +28,7 @@ class UrlCrawler {
    request(url, callback) {
      //console.log('request() url=' + url);
      this.http.get(url).end(function(err, response) {
-       callback(err, {url: url, headers: response.headers, content: response.text});
+       callback(err, {url: url, headers: response.headers, content: response.text, resources: []});
      });
    }
 
@@ -36,22 +39,47 @@ class UrlCrawler {
     */
    crawl(callback) {
      var _this = this;
-      var pages = {};
-      _this.request(_this.rootUrl, function(err, response1) {
-          pages[_this.rootUrl] = response1;
-          htmlParser.extractLinks(response1.content, {}, function(links) {
+     var cb = function() {
+       logger.debug('******** crawl() all links retrievied, done.');
+       callback(null, _this.pages);
+     }
+     this.crawlUrl(_this.rootUrl, cb);
+   }
+
+   /**
+    * Start crawling hyperlinks from given url
+    * @param {string} url - url to start crawling from
+    * @param {function} callback - callback function to return crawled resources (with no parameters)
+    */
+   crawlUrl(link, clientCallback) {
+     logger.debug('crawlUrl() link=' + link);
+     logger.debug('crawlUrl() pages=' + Object.keys(this.pages).length);
+     var _this = this;
+      _this.request(link, function(err, response) {
+          _this.pages[link] = response;
+          // Extract links to all resource types eg: hyperlinks, scripts, images and add as child resources to page
+          htmlParser.extractLinks(response.content, {}, function(links) {
+              var responses = 0;
+              var page = _this.pages[response.url];
+              for (var link in links) {
+                page.resources.push(links[link]);
+              }
+          });
+
+          // Extract just links to only <a href> hyperlinks to crawl recursively
+          htmlParser.extractLinks(response.content, {a: 'href'}, function(links) {
               var responses = 0;
               for (var i in links) {
                   var link = links[i];
-                  _this.request(link, function(err, response2) {
+                  _this.crawlUrl(link, function() {
                       responses++;
-                      pages[response2.url] = response2;
-                      if (responses == links.length) callback(null, pages);
+                      if (responses == links.length) clientCallback();
                   });
               }
+              if (links.length == 0 ) clientCallback();
           });
+
       });
-      //
    }
 }
 

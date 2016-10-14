@@ -79,6 +79,48 @@ describe('UrlCrawler.js Tests: ', function() {
           done();
         });
     });
+
+
+    it('crawls single hyperlink on each html resource starting from root url going 3 levels deep', function(done) {
+        var page1 = 'http://testsite/page1';
+        var page2 = '/page2';
+        var page3 = '/page3';
+
+        // Structure of hyoper links in resources: page1 -> page2 -> page3
+        // If this test passes we have retieved a simple contrived structuce of the site
+        var stub = sandbox.stub(superagent, 'get');
+        stubResource(stub, page1, 'page1.html');
+        stubResource(stub, page2, 'page2.html');
+        stubResource(stub, page3, 'page3.html');
+
+        var urlCrawler = new UrlCrawler(page1, superagent);
+        urlCrawler.crawl(function(err, results) {
+
+          expect(stub.calledWith(page1)).to.equal(true);
+          expect(results[page1].content).to.contain('<title>page 1</title>');
+            // assert that page1 has expected child resources to reflect structure of site
+          expect(results[page1].resources).to.have.lengthOf(3);
+          expect(results[page1].resources).to.contain('/page2');
+          expect(results[page1].resources).to.contain('/page3');
+          expect(results[page1].resources).to.contain('/js/script1.js');
+
+          expect(stub.calledWith(page2)).to.equal(true);
+          expect(results[page2].content).to.contain('<title>page 2</title>');
+            // assert that page2 has expected child resources to reflect structure of site
+          expect(results[page2].resources).to.have.lengthOf(2);
+          expect(results[page2].resources).to.contain('/page3');
+          expect(results[page2].resources).to.contain('/js/script2.js');
+
+          expect(stub.calledWith(page3)).to.equal(true);
+          expect(results[page3].content).to.contain('<title>page 3</title>');
+          // assert that page3 has expected child resources to reflect structure of site
+          expect(results[page3].resources).to.have.lengthOf(1);
+          expect(results[page3].resources).to.contain('/js/script3.js');
+
+
+          done();
+        });
+    });
 });
 
 
