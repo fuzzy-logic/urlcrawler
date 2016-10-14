@@ -27,11 +27,15 @@ describe('UrlCrawler.js Tests: ', function() {
 
     it('calls back with expetcted resource response for given url request', function(done) {
         var url = 'http://testsite/';
+
+        // Stub http agent request for url http://testsite/ with content from file three-hyperlinks.html
         var stub = sandbox.stub(superagent, 'get');
         stubResource(stub, url, 'three-hyperlinks.html');
         var urlCrawler = new UrlCrawler(url, superagent);
 
+        // Call crawler and assert test expectations
         urlCrawler.request(url, function(err, response) {
+          // assert content matches html in three-hyperlinks.html file loaded by stubbed html agent via sinon
           expect(response.content).to.contain('<html>');
           expect(response.content).to.contain('<title>sample test page</title>');
           expect(response.content).to.contain('</html>');
@@ -41,7 +45,7 @@ describe('UrlCrawler.js Tests: ', function() {
         });
     });
 
-    it('crawls hyperlinks in resource and returns all links and content', function(done) {
+    it('crawls 3 hyperlinks from root url resource 1 level deep', function(done) {
         var rootUrl = 'http://testsite/';
         var link1 = '/link1';
         var link2 = '/link2';
@@ -56,22 +60,25 @@ describe('UrlCrawler.js Tests: ', function() {
         var urlCrawler = new UrlCrawler(rootUrl, superagent);
         urlCrawler.crawl(function(err, results) {
 
+          // assert that the stubbed http agent was called with rootUrl and returns expected content
           expect(stub.calledWith(rootUrl)).to.equal(true);
           expect(results[rootUrl].content).to.contain('<title>sample test page</title>');
 
+          // assert that the stubbed http agent was called with /link1 found in rootUrl html and returns expected content
           expect(stub.calledWith(link1)).to.equal(true);
           expect(results[link1].content).to.contain('<title>link 1</title>');
 
+          // etc.. /link2 as above
           expect(stub.calledWith(link2)).to.equal(true);
           expect(results[link2].content).to.contain('<title>link 2</title>');
 
+          // etc.. /link3 as above
           expect(stub.calledWith(link3)).to.equal(true);
           expect(results[link3].content).to.contain('<title>link 3</title>');
 
           done();
         });
     });
-
 });
 
 

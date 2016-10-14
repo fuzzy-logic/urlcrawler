@@ -1,5 +1,6 @@
 var cheerio = require('cheerio');
 var async = require('async');
+var logger = require('sexylog');
 
 /**
  * Extract resource links from html dom
@@ -9,22 +10,29 @@ var async = require('async');
  * @param {string} html - url to request
  * @param {function} clientCallback - callback function to return parsed links as {array} of {string}s
  */
-module.exports.extractLinks = function(html, clientCallback) {
+module.exports.extractLinks = function(html, types, clientCallback) {
 
   var $dom = cheerio.load(html);
   var links = [];
-  async.series([
-      function(asyncCallback) {
-        parseDom($dom, {ele: 'a', attrib: 'href'}, links, asyncCallback);
-      },
-      function(asyncCallback) {
-        parseDom($dom, {ele: 'script', attrib: 'src'}, links, asyncCallback);
-      },
-      function(asyncCallback) {
-        parseDom($dom, {ele: 'img', attrib: 'src'}, links, asyncCallback);
+  var parseTypeFunctions = [];
+  if (! types || Object.keys(types).length <= 0) {
+    types = {a: 'href', script: 'src', img: 'src'};
+  }
+  logger.trace('extractLinks() types=', JSON.stringify(types));
+  var  i = 0;
+  for (var ele in types) {
+
+      var createParserCallForElement = function(elementName, attribute)  {
+        return function(asyncCallback) {
+          parseDom($dom, {ele: elementName, attrib: attribute}, links, asyncCallback);
+        }
       }
-  ], function(err, results) {
-      clientCallback(links);
+      parseTypeFunctions[i++] = createParserCallForElement(ele, types[ele]);
+  }
+  logger.trace('extractLinks() parseTypeFunctions=', JSON.stringify(parseTypeFunctions));
+  async.series(parseTypeFunctions, function(err, results) {
+    logger.debug('extractLinks() done. links=', JSON.stringify(links));
+    clientCallback(links);
   });
 }
 
@@ -38,6 +46,8 @@ module.exports.extractLinks = function(html, clientCallback) {
  * @param {function} callback - callback function to return when done
  */
 function parseDom(dom, params, links, callback) {
+
+  logger.trace('parseDom(), params=' + JSON.stringify(params));
   var numOfElements =  dom(params.ele).length;
   if (numOfElements <= 0) callback();
   dom(params.ele).each(function(index, ele) {
@@ -52,7 +62,9 @@ function parseDom(dom, params, links, callback) {
 }
 
 
+function createParserCallForElement() {
 
+}
 
 function isInternalLink(hyperlink) {
   if (hyperlink && hyperlink.indexOf('/') === 0) {

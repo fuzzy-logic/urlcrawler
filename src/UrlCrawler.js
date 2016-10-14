@@ -39,7 +39,7 @@ class UrlCrawler {
       var pages = {};
       _this.request(_this.rootUrl, function(err, response1) {
           pages[_this.rootUrl] = response1;
-          htmlParser.extractLinks(response1.content, function(links) {
+          htmlParser.extractLinks(response1.content, {}, function(links) {
               var responses = 0;
               for (var i in links) {
                   var link = links[i];
@@ -54,6 +54,8 @@ class UrlCrawler {
       //
    }
 }
+
+
 
 
 

@@ -11,7 +11,7 @@ describe('HtmlParserTest.js Tests: ', function() {
 
     it('extracts multiple <a href> hyperlinks', function(done) {
         loadHtml('three-hyperlinks.html', function(html) {
-          htmlParser.extractLinks(html, function(links) {
+          htmlParser.extractLinks(html, {}, function(links) {
             expect(links).to.have.lengthOf(3);
             expect(links).to.include('/link1');
             expect(links).to.include('/link2');
@@ -24,7 +24,7 @@ describe('HtmlParserTest.js Tests: ', function() {
 
     it('extracts multiple resource type links', function(done) {
         loadHtml('multi-resource-links.html', function(html) {
-          htmlParser.extractLinks(html, function(links) {
+          htmlParser.extractLinks(html, {}, function(links) {
             expect(links).to.have.lengthOf(9);
             expect(links).to.include('/link1');
             expect(links).to.include('/link2');
@@ -35,6 +35,19 @@ describe('HtmlParserTest.js Tests: ', function() {
             expect(links).to.include('/img/logo-sml.png');
             expect(links).to.include('/img/logo-med.png');
             expect(links).to.include('/img/logo-lrg.png');
+            done();
+          });
+
+        });
+    });
+
+    it('returns expected hyperlink types with given type parameters', function(done) {
+        loadHtml('multi-resource-links.html', function(html) {
+          htmlParser.extractLinks(html, {a: 'href'}, function(links) {
+            expect(links).to.have.lengthOf(3);
+            expect(links).to.include('/link1');
+            expect(links).to.include('/link2');
+            expect(links).to.include('/link3');
             done();
           });
 
