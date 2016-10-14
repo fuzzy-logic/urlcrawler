@@ -61,3 +61,4 @@ Sort of :) Currently the test below proves with a mock web site that the crawler
 * have not set a per resource timeout for requests
 * Have not set a configurable parameter to throttle crawling of sites   
 * Have not written a simple shell script to run the crawler from the command line to conveniently output the site map
+* Have only tested happy path in unit tests with more time would add tests for exceptiom paths
