@@ -1,10 +1,8 @@
 # urlcrawler
 
-Crawls a given Url and reutns structure of a web site.
+Crawls a given Url and returns the structure of a web site.
 
 # Getting Started
-
-Steps to get project up and running...
 
 
 ## Dependencies
@@ -33,7 +31,7 @@ To take a closer look the tests are in ./test directory. Project source code in 
 ```
 
 
-## Running the crawler
+## Running the crawler from the command line
 
 Not yet implemented! TODO!
 
@@ -43,7 +41,7 @@ Not yet implemented! TODO!
 Sort of :) Currently the test below proves with a mock web site that the crawler can crawl a very simple contrived website:
 
 ```
-mocha test/UrlCrawlerTest.js -g 'crawls single hyperlink on each html resource starting from root url going 3 levels deep'
+./node_modules/mocha/bin/mocha test/UrlCrawlerTest.js -g 'url going 3 levels deep'
 ```
 
 
