@@ -48,12 +48,12 @@ Sort of :) Currently the test below proves with a mock web site that the crawler
 # Design tradeoffs, TODOs and improvements
 
 * UrlCrawler.crawl(callback) fucntion somwhat redundant, ideally refactor our and simply ue CrawlUrl(url, callback)
-* Crawling via recursive calls not ideal for large sites with many rsources, ideally add worker taking urls off queue 
+* Recursive crawling for large sites with many hyperlinks resource intensive, ideally add workers taking urls off queue for better scalability and scheduling
 * Page literal object in UrlCrawler should be defined as class object with tests
-* Internal site link logic in HtmlParse far too simplisitic and won't work with link that don't start with leading '/'
+* Internal site link logic in HtmlParse far too simplisitic and won't work with links that don't start with leading '/'
 * Convert callbacks (far too nested) to promises for improved readiability and comprehension  
 * UrlCrawler parses dom object twice for child resources and again for hyperlinks - should do this once
-* HtmlParser unable to parse dom in parallel as in memeory with js single thread
+* HtmlParser parses dom object several times to get various links types, could use dom stream parses to improve speed
 * http request stubbing with sinon a litlte awkward, couldn't find anything more succint for mocking http call & resources
 * Have not tested crawling circular links
 * Idealy set max depth to avoid issues crawling very deep site structures and running out of resources
