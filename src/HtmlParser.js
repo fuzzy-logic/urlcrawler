@@ -8,6 +8,7 @@ var logger = require('sexylog');
  * Tradeoffs/Improvements; TODO
  *
  * @param {string} html - url to request
+ * @param {object} types - Element and attributes to extract links from. Can be null or empty. eg: {a: 'href,' script: 'src', img: 'src'}
  * @param {function} clientCallback - callback function to return parsed links as {array} of {string}s
  */
 module.exports.extractLinks = function(html, types, clientCallback) {

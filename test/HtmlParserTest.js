@@ -41,9 +41,10 @@ describe('HtmlParserTest.js Tests: ', function() {
         });
     });
 
-    it('returns expected hyperlink types with given type parameters', function(done) {
+    it('returns expected <a href> hyperlink types when specified with type parameters', function(done) {
         loadHtml('multi-resource-links.html', function(html) {
-          htmlParser.extractLinks(html, {a: 'href'}, function(links) {
+          var types = {a: 'href'};
+          htmlParser.extractLinks(html, types, function(links) {
             expect(links).to.have.lengthOf(3);
             expect(links).to.include('/link1');
             expect(links).to.include('/link2');
