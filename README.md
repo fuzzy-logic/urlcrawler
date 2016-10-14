@@ -60,4 +60,4 @@ mocha test/UrlCrawlerTest.js -g 'crawls single hyperlink on each html resource s
 * Have not enabled config to set an overall timeout and return what ever resources were retrieved
 * have not set a per resource timeout for requests
 * Have not set a configurable parameter to throttle crawling of sites   
-* Have not written a simple shell script to run the crawler from the command line for convenient reuse
+* Have not written a simple shell script to run the crawler from the command line to conveniently output the site map
