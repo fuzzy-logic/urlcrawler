@@ -11,6 +11,8 @@ Steps to get project up and running...
 
 You'll need nodejs to run, if not installed you'll need to get it from here:
 
+This project has been tested with node v4.6.0.
+
 https://nodejs.org/en/download/
 
 Once nodejs is working, install urlcrawler depenedencies with the following command:
